@@ -5,6 +5,9 @@ FMPhoneTextField provides a simple and easy way to deal with mobile number field
 
 It is compatible with **iOS** (8.0 - 10.0)
 
+## Preview
+<img src="https://github.com/AaoIi/FMPhoneTextField/blob/master/sample.png?raw=true">
+
 # IMPORTANT
 
 ## Supporting Swift 3+
