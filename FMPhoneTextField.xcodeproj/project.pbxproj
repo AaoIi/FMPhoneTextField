@@ -7,22 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F92A7941EEEBFA400D0F095 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F92A78C1EEEBFA400D0F095 /* countries.json */; };
+		3F92A7951EEEBFA400D0F095 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A78D1EEEBFA400D0F095 /* CountryCell.swift */; };
+		3F92A7961EEEBFA400D0F095 /* CountryControls.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F92A78E1EEEBFA400D0F095 /* CountryControls.xcassets */; };
+		3F92A7971EEEBFA400D0F095 /* CountryListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A78F1EEEBFA400D0F095 /* CountryListDataSource.swift */; };
+		3F92A7981EEEBFA400D0F095 /* CountryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A7901EEEBFA400D0F095 /* CountryListViewController.swift */; };
+		3F92A7991EEEBFA400D0F095 /* CountryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F92A7911EEEBFA400D0F095 /* CountryListViewController.xib */; };
+		3F92A79A1EEEBFA400D0F095 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A7921EEEBFA400D0F095 /* Extentions.swift */; };
+		3F92A79B1EEEBFA400D0F095 /* FMCountryTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A7931EEEBFA400D0F095 /* FMCountryTextField.swift */; };
 		3FA8615B1EE55FEB004A43B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA8615A1EE55FEB004A43B2 /* AppDelegate.swift */; };
 		3FA8615D1EE55FEB004A43B2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA8615C1EE55FEB004A43B2 /* ViewController.swift */; };
 		3FA861601EE55FEB004A43B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA8615E1EE55FEB004A43B2 /* Main.storyboard */; };
 		3FA861621EE55FEB004A43B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA861611EE55FEB004A43B2 /* Assets.xcassets */; };
 		3FA861651EE55FEB004A43B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA861631EE55FEB004A43B2 /* LaunchScreen.storyboard */; };
-		3FA861761EE560F8004A43B2 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 3FA8616E1EE560F8004A43B2 /* countries.json */; };
-		3FA861771EE560F8004A43B2 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA8616F1EE560F8004A43B2 /* CountryCell.swift */; };
-		3FA861781EE560F8004A43B2 /* CountryControls.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA861701EE560F8004A43B2 /* CountryControls.xcassets */; };
-		3FA861791EE560F8004A43B2 /* CountryListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA861711EE560F8004A43B2 /* CountryListDataSource.swift */; };
-		3FA8617A1EE560F8004A43B2 /* CountryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA861721EE560F8004A43B2 /* CountryListViewController.swift */; };
-		3FA8617B1EE560F8004A43B2 /* CountryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FA861731EE560F8004A43B2 /* CountryListViewController.xib */; };
-		3FA8617C1EE560F8004A43B2 /* FMCountryTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA861741EE560F8004A43B2 /* FMCountryTextField.swift */; };
-		3FA8617D1EE560F8004A43B2 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA861751EE560F8004A43B2 /* Extentions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F92A78C1EEEBFA400D0F095 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
+		3F92A78D1EEEBFA400D0F095 /* CountryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
+		3F92A78E1EEEBFA400D0F095 /* CountryControls.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CountryControls.xcassets; sourceTree = "<group>"; };
+		3F92A78F1EEEBFA400D0F095 /* CountryListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListDataSource.swift; sourceTree = "<group>"; };
+		3F92A7901EEEBFA400D0F095 /* CountryListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListViewController.swift; sourceTree = "<group>"; };
+		3F92A7911EEEBFA400D0F095 /* CountryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountryListViewController.xib; sourceTree = "<group>"; };
+		3F92A7921EEEBFA400D0F095 /* Extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
+		3F92A7931EEEBFA400D0F095 /* FMCountryTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMCountryTextField.swift; sourceTree = "<group>"; };
 		3FA861571EE55FEB004A43B2 /* FMPhoneTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FMPhoneTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FA8615A1EE55FEB004A43B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FA8615C1EE55FEB004A43B2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -30,14 +38,6 @@
 		3FA861611EE55FEB004A43B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3FA861641EE55FEB004A43B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FA861661EE55FEB004A43B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3FA8616E1EE560F8004A43B2 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
-		3FA8616F1EE560F8004A43B2 /* CountryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
-		3FA861701EE560F8004A43B2 /* CountryControls.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CountryControls.xcassets; sourceTree = "<group>"; };
-		3FA861711EE560F8004A43B2 /* CountryListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListDataSource.swift; sourceTree = "<group>"; };
-		3FA861721EE560F8004A43B2 /* CountryListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListViewController.swift; sourceTree = "<group>"; };
-		3FA861731EE560F8004A43B2 /* CountryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountryListViewController.xib; sourceTree = "<group>"; };
-		3FA861741EE560F8004A43B2 /* FMCountryTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMCountryTextField.swift; sourceTree = "<group>"; };
-		3FA861751EE560F8004A43B2 /* Extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +51,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F92A78A1EEEBFA400D0F095 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3F92A78B1EEEBFA400D0F095 /* Countries */,
+				3F92A7921EEEBFA400D0F095 /* Extentions.swift */,
+				3F92A7931EEEBFA400D0F095 /* FMCountryTextField.swift */,
+			);
+			path = Classes;
+			sourceTree = SOURCE_ROOT;
+		};
+		3F92A78B1EEEBFA400D0F095 /* Countries */ = {
+			isa = PBXGroup;
+			children = (
+				3F92A78C1EEEBFA400D0F095 /* countries.json */,
+				3F92A78D1EEEBFA400D0F095 /* CountryCell.swift */,
+				3F92A78E1EEEBFA400D0F095 /* CountryControls.xcassets */,
+				3F92A78F1EEEBFA400D0F095 /* CountryListDataSource.swift */,
+				3F92A7901EEEBFA400D0F095 /* CountryListViewController.swift */,
+				3F92A7911EEEBFA400D0F095 /* CountryListViewController.xib */,
+			);
+			path = Countries;
+			sourceTree = "<group>";
+		};
 		3FA8614E1EE55FEB004A43B2 = {
 			isa = PBXGroup;
 			children = (
@@ -71,7 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				3FA8615A1EE55FEB004A43B2 /* AppDelegate.swift */,
-				3FA8616C1EE560F8004A43B2 /* Classes */,
+				3F92A78A1EEEBFA400D0F095 /* Classes */,
 				3FA8615C1EE55FEB004A43B2 /* ViewController.swift */,
 				3FA8615E1EE55FEB004A43B2 /* Main.storyboard */,
 				3FA861611EE55FEB004A43B2 /* Assets.xcassets */,
@@ -79,29 +102,6 @@
 				3FA861661EE55FEB004A43B2 /* Info.plist */,
 			);
 			path = FMPhoneTextField;
-			sourceTree = "<group>";
-		};
-		3FA8616C1EE560F8004A43B2 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				3FA8616D1EE560F8004A43B2 /* Countries */,
-				3FA861741EE560F8004A43B2 /* FMCountryTextField.swift */,
-				3FA861751EE560F8004A43B2 /* Extentions.swift */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		3FA8616D1EE560F8004A43B2 /* Countries */ = {
-			isa = PBXGroup;
-			children = (
-				3FA8616E1EE560F8004A43B2 /* countries.json */,
-				3FA8616F1EE560F8004A43B2 /* CountryCell.swift */,
-				3FA861701EE560F8004A43B2 /* CountryControls.xcassets */,
-				3FA861711EE560F8004A43B2 /* CountryListDataSource.swift */,
-				3FA861721EE560F8004A43B2 /* CountryListViewController.swift */,
-				3FA861731EE560F8004A43B2 /* CountryListViewController.xib */,
-			);
-			path = Countries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,10 +165,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA861651EE55FEB004A43B2 /* LaunchScreen.storyboard in Resources */,
-				3FA8617B1EE560F8004A43B2 /* CountryListViewController.xib in Resources */,
+				3F92A7991EEEBFA400D0F095 /* CountryListViewController.xib in Resources */,
 				3FA861621EE55FEB004A43B2 /* Assets.xcassets in Resources */,
-				3FA861781EE560F8004A43B2 /* CountryControls.xcassets in Resources */,
-				3FA861761EE560F8004A43B2 /* countries.json in Resources */,
+				3F92A7961EEEBFA400D0F095 /* CountryControls.xcassets in Resources */,
+				3F92A7941EEEBFA400D0F095 /* countries.json in Resources */,
 				3FA861601EE55FEB004A43B2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,13 +180,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FA8617C1EE560F8004A43B2 /* FMCountryTextField.swift in Sources */,
 				3FA8615D1EE55FEB004A43B2 /* ViewController.swift in Sources */,
-				3FA8617A1EE560F8004A43B2 /* CountryListViewController.swift in Sources */,
-				3FA861791EE560F8004A43B2 /* CountryListDataSource.swift in Sources */,
+				3F92A7981EEEBFA400D0F095 /* CountryListViewController.swift in Sources */,
+				3F92A79A1EEEBFA400D0F095 /* Extentions.swift in Sources */,
+				3F92A7971EEEBFA400D0F095 /* CountryListDataSource.swift in Sources */,
+				3F92A79B1EEEBFA400D0F095 /* FMCountryTextField.swift in Sources */,
 				3FA8615B1EE55FEB004A43B2 /* AppDelegate.swift in Sources */,
-				3FA861771EE560F8004A43B2 /* CountryCell.swift in Sources */,
-				3FA8617D1EE560F8004A43B2 /* Extentions.swift in Sources */,
+				3F92A7951EEEBFA400D0F095 /* CountryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
