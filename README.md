@@ -25,7 +25,7 @@ github "aaoii/FMPhoneTextField" ~> 1.0
 ### Manual
 Just drop the **FMPhoneTextField/Classes** folder into your project. That's it!
 
-### CocoaPods
+### CocoaPods (Pending)
 [CocoaPods][] is a dependency manager for Cocoa projects. To install FMPhoneTextField with CocoaPods:
 
  1. Make sure CocoaPods is [installed][CocoaPods Installation].
@@ -45,7 +45,7 @@ Just drop the **FMPhoneTextField/Classes** folder into your project. That's it!
  4. In your code import FMPhoneTextField like so:
    `import FMPhoneTextField`
 
-### Carthage
+### Carthage (Pending)
 [Carthage][] is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 To install FMPhoneTextField with Carthage:
 

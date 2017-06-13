@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol CountryTextFieldDelegate {
+public protocol CountryTextFieldDelegate {
     
     func didFindDefaultCounryCode(_ success:Bool,withInfo info: (dialCode:String?,code:String?))
     
 }
 
-class FMCountryTextField: UITextField,CountryListViewDelegate {
+public class FMCountryTextField: UITextField,CountryListViewDelegate {
     
     // Views
     private var contentViewholder : UIView!
@@ -36,7 +36,7 @@ class FMCountryTextField: UITextField,CountryListViewDelegate {
     
     //MARK: - Life cycle
     
-    override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         
         // Add country left View
@@ -62,7 +62,7 @@ class FMCountryTextField: UITextField,CountryListViewDelegate {
         
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
     
@@ -270,7 +270,7 @@ class FMCountryTextField: UITextField,CountryListViewDelegate {
     
     //MARK: - Country Delegate
     
-    internal func didSelectCountry(country: Dictionary<String, Any>) {
+    public func didSelectCountry(country: Dictionary<String, Any>) {
         
         let dialCode = (country[kCountryDefaults.kCountryCallingCode]) as! String
         let code = (country[kCountryDefaults.kCountryCode]) as! String

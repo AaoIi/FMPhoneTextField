@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIWindow {
+public extension UIWindow {
     
     func visibleViewController() -> UIViewController? {
         if let rootViewController: UIViewController  = self.rootViewController {
