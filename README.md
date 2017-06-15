@@ -83,11 +83,11 @@ To install FMPhoneTextField with Carthage:
 
 //declare this inside of viewDidLoad to style your textfield or override the current style
 
-	countryTextField.setBorderColorWithWidth(UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0), width: 1)
-	countryTextField.setCornerRadius(7)
-	countryTextField.setBackgroundTint(UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0))
-    countryTextField.setCountryCodeLabelTextColor(UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0))
-    countryTextField.setSeparatorBackgroundColor(UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0))
+countryTextField.setBorderColorWithWidth(UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0), width: 1)
+countryTextField.setCornerRadius(7)
+countryTextField.setBackgroundTint(UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0))
+countryTextField.setCountryCodeLabelTextColor(UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0))
+countryTextField.setSeparatorBackgroundColor(UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0))
 
 //validate the phone using this proparty
 
