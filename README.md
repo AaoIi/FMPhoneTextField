@@ -45,28 +45,6 @@ Just drop the **FMPhoneTextField/Classes** folder into your project. That's it!
  4. In your code import FMPhoneTextField like so:
    `import FMPhoneTextField`
 
-### Carthage (Pending)
-[Carthage][] is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
-To install FMPhoneTextField with Carthage:
-
-1. Install Carthage via [Homebrew][]
-  ```bash
-  $ brew update
-  $ brew install carthage
-  ```
-
-2. Add `github "aaoii/FMPhoneTextField"` to your Cartfile.
-
-3. Run `carthage update`.
-
-4. Drag `FMPhoneTextField.framework` from the `Carthage/Build/iOS/` directory to the `Linked Frameworks and Libraries` section of your Xcode project’s `General` settings.
-
-5. Add `$(SRCROOT)/Carthage/Build/iOS/FMPhoneTextField.framework` to `Input Files` of Run Script Phase for Carthage.
-
-[Carthage]: https://github.com/Carthage/Carthage
-[Homebrew]: http://brew.sh
-
-
 ## Example
 
 ```swift
