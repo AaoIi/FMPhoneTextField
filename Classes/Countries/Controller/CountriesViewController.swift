@@ -1,5 +1,5 @@
 //
-//  CountryListViewController.swift
+//  CountriesViewController.swift
 //
 //
 //  Created by Saad Basha on 5/17/17.

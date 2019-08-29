@@ -38,20 +38,10 @@ class CountryCell: UITableViewCell {
 
         self.logo?.image = UIImage(named: country.isoShortCode?.lowercased() ?? "")
         
-        // for english
         self.code?.text = isCountryCodeHidden ? "" : country.countryInternationlKey
         self.code?.textColor = .gray
         
-        // for english
-        if language == .arabic {
-            
-            self.name?.text = country.nameAr
-            
-        }else {
-            
-            self.name?.text = country.nameEn
-            
-        }
+        self.name?.text = language == .arabic ? country.nameAr : country.nameEn
         
         self.textLabel?.textColor = .black
         self.textLabel?.numberOfLines = 0
