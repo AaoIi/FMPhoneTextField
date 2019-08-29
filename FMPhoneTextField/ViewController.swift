@@ -9,12 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController,CountryTextFieldDelegate {
-
     
     @IBOutlet var countryTextField: FMCountryTextField!{
         didSet{
             //countryTextField.isArabic = true
             countryTextField.countryDelegate = self
+            countryTextField.language = .english
         }
     }
     

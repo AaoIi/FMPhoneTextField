@@ -14,7 +14,7 @@ public protocol CountryTextFieldDelegate {
     
 }
 
-public class FMCountryTextField: UITextField,CountryListViewDelegate {
+public class FMCountryTextField: UITextField,CountriesDelegate {
     
     // Views
     private var contentViewholder : UIView!
@@ -31,7 +31,7 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
     private var separatorBackgroundColor = UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0)
     
     var countryDelegate : CountryTextFieldDelegate?
-    var isArabic = false
+    var language : language! = .english
     private var info : (dialCode:String?,code:String?,name:String?)!
     
     //MARK: - Life cycle
@@ -71,9 +71,9 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
     
     //MARK: - Update Views
 
-    func updateCountryLabel(info: (dialCode:String,code:String,name:String)){
+    func updateCountryLabel(info: (dialCode:String?,code:String?,name:String?)){
     
-        self.countryCodeLabel.text = "\(info.dialCode) \(info.code)"
+        self.countryCodeLabel.text = "\(info.dialCode ?? "") \(info.code ?? "")"
         self.info = (info.dialCode,info.code,info.name)
     
     }
@@ -84,9 +84,9 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
 
         if withPlus {
             
-            if self.text!.characters.count > 0 {
-                if self.text!.characters.first == "0" {
-                    let phone = String(self.text!.characters.dropFirst())
+            if self.text!.count > 0 {
+                if self.text!.first == "0" {
+                    let phone = String(self.text!.dropFirst())
                     self.text! = phone
                 }
             }
@@ -96,9 +96,9 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
         }else {
         
             let code = code.replacingOccurrences(of: "+", with: "00")
-            if self.text!.characters.count > 0 {
-                if self.text!.characters.first == "0" {
-                    let phone = String(self.text!.characters.dropFirst())
+            if self.text!.count > 0 {
+                if self.text!.first == "0" {
+                    let phone = String(self.text!.dropFirst())
                     self.text! = phone
                 }
             }
@@ -128,22 +128,22 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
         let currentLocale : NSLocale = NSLocale.current as NSLocale
         let countryCode = currentLocale.object(forKey: NSLocale.Key.countryCode) as? String
         
-        let countries = CountryListDataSource().countries()
+        guard let countries = CountryListDataSource.getCountries(language: language) else {return}
         
         for country in countries {
             
-            if country[kCountryDefaults.kCountryCode] as? String == countryCode {
+            if country.isoShortCode?.lowercased() == countryCode?.lowercased() {
                 
-                let dialCode = (country[kCountryDefaults.kCountryCallingCode]) as! String
-                let code = (country[kCountryDefaults.kCountryCode]) as! String
-                let name = self.isArabic ? (country[kCountryDefaults.kArabicCountryName]) as! String : (country[kCountryDefaults.kCountryName]) as! String
+                let dialCode = country.countryInternationlKey
+                let code = country.isoShortCode
+                let name = language == .arabic ? country.nameAr : country.nameEn
                 
                 self.updateCountryLabel(info: (dialCode: dialCode, code: code, name: name))
                 
                 guard let delegate = self.countryDelegate else {print("Error:delegate is not set"); return }
                 delegate.didFindDefaultCounryCode(true, withInfo: (dialCode: dialCode, code: code))
                 
-                break;
+                return;
             }
             
         }
@@ -209,7 +209,7 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
         self.contentViewholder.addSubview(countryButton)
         self.contentViewholder.addSubview(separator)
         
-        self.leftViewMode = UITextFieldViewMode.always
+        self.leftViewMode = UITextField.ViewMode.always
         
         self.leftView = self.contentViewholder
         
@@ -257,11 +257,7 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
     
     @objc private func presentCountryView(_ textField:FMCountryTextField){
         
-        let vc = CountryListViewController(nibName: "CountryListViewController", bundle: nil)
-        vc.delegate = self
-        if self.isArabic {
-            vc.isArabic = self.isArabic
-        }
+        let vc = CountriesViewController(delegate: self, language: language)
         let navigation = UINavigationController(rootViewController: vc)
         guard let topMostViewController = self.getTopMostViewController() else { print("Could not present"); return }
         topMostViewController.present(navigation, animated: true, completion: nil)
@@ -270,11 +266,11 @@ public class FMCountryTextField: UITextField,CountryListViewDelegate {
     
     //MARK: - Country Delegate
     
-    public func didSelectCountry(country: Dictionary<String, Any>) {
+    public func didSelectCountry(country: CountryElement) {
         
-        let dialCode = (country[kCountryDefaults.kCountryCallingCode]) as! String
-        let code = (country[kCountryDefaults.kCountryCode]) as! String
-        let name = self.isArabic ? (country[kCountryDefaults.kArabicCountryName]) as! String : (country[kCountryDefaults.kCountryName]) as! String
+        let dialCode = country.countryInternationlKey
+        let code = country.isoShortCode
+        let name = language == .arabic ? country.nameAr : country.nameEn
         
         // update the country and the code
         self.updateCountryLabel(info: (dialCode: dialCode, code: code, name: name))
