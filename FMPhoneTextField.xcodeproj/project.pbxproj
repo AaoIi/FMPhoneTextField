@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		3F92A7941EEEBFA400D0F095 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F92A78C1EEEBFA400D0F095 /* countries.json */; };
 		3F92A7961EEEBFA400D0F095 /* CountryControls.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F92A78E1EEEBFA400D0F095 /* CountryControls.xcassets */; };
-		3F92A7971EEEBFA400D0F095 /* CountryListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A78F1EEEBFA400D0F095 /* CountryListDataSource.swift */; };
+		3F92A7971EEEBFA400D0F095 /* CountriesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A78F1EEEBFA400D0F095 /* CountriesDataSource.swift */; };
 		3F92A7981EEEBFA400D0F095 /* CountriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A7901EEEBFA400D0F095 /* CountriesViewController.swift */; };
 		3F92A7991EEEBFA400D0F095 /* CountriesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F92A7911EEEBFA400D0F095 /* CountriesViewController.xib */; };
 		3F92A79A1EEEBFA400D0F095 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92A7921EEEBFA400D0F095 /* Extentions.swift */; };
@@ -28,7 +28,7 @@
 /* Begin PBXFileReference section */
 		3F92A78C1EEEBFA400D0F095 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
 		3F92A78E1EEEBFA400D0F095 /* CountryControls.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CountryControls.xcassets; sourceTree = "<group>"; };
-		3F92A78F1EEEBFA400D0F095 /* CountryListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListDataSource.swift; sourceTree = "<group>"; };
+		3F92A78F1EEEBFA400D0F095 /* CountriesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountriesDataSource.swift; sourceTree = "<group>"; };
 		3F92A7901EEEBFA400D0F095 /* CountriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountriesViewController.swift; sourceTree = "<group>"; };
 		3F92A7911EEEBFA400D0F095 /* CountriesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountriesViewController.xib; sourceTree = "<group>"; };
 		3F92A7921EEEBFA400D0F095 /* Extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 		EF8E15D42317DDE500E0D2DB /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				3F92A78F1EEEBFA400D0F095 /* CountryListDataSource.swift */,
+				3F92A78F1EEEBFA400D0F095 /* CountriesDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -242,7 +242,7 @@
 				3F92A79A1EEEBFA400D0F095 /* Extentions.swift in Sources */,
 				EF8E15D32317B00600E0D2DB /* Language.swift in Sources */,
 				EF8E15CF2317ABE400E0D2DB /* CountryCell.swift in Sources */,
-				3F92A7971EEEBFA400D0F095 /* CountryListDataSource.swift in Sources */,
+				3F92A7971EEEBFA400D0F095 /* CountriesDataSource.swift in Sources */,
 				EF8E15C923169B1300E0D2DB /* Country.swift in Sources */,
 				3F92A79B1EEEBFA400D0F095 /* FMCountryTextField.swift in Sources */,
 				3FA8615B1EE55FEB004A43B2 /* AppDelegate.swift in Sources */,

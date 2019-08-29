@@ -1,5 +1,5 @@
 //
-//  CountryListDataSource.swift
+//  CountriesDataSource.swift
 //  
 //
 //  Created by Saad Basha on 5/17/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CountryListDataSource {
+class CountriesDataSource {
 
     private static var country : Country? = {
         return parseJSON()

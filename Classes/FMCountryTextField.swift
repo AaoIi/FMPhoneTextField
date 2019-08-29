@@ -29,18 +29,22 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
     private var backgroundTintColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0)
     private var codeTextColor = UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0)
     private var separatorBackgroundColor = UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0)
+    var separatorWidth : CGFloat = 1
     
     var countryDelegate : CountryTextFieldDelegate?
     var language : language! = .english
     private var info : (dialCode:String?,code:String?,name:String?)!
+    
     
     //MARK: - Life cycle
     
     override public func awakeFromNib() {
         super.awakeFromNib()
         
+        self.semanticContentAttribute = .forceLeftToRight
+        
         // Add country left View
-        self.addCountryView()
+        self.setupCountryView()
         
         // Setup TextField Keyboard
         if #available(iOS 10, *){
@@ -57,23 +61,12 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
 
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-    }
-    
-    required public init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-    }
-    
-    
-
-    
     //MARK: - Update Views
 
     func updateCountryLabel(info: (dialCode:String?,code:String?,name:String?)){
     
-        self.countryCodeLabel.text = "\(info.dialCode ?? "") \(info.code ?? "")"
+        let text = "\(info.code ?? "") \(info.dialCode ?? "")"
+        self.setupCountryView(text: text)
         self.info = (info.dialCode,info.code,info.name)
     
     }
@@ -128,7 +121,7 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         let currentLocale : NSLocale = NSLocale.current as NSLocale
         let countryCode = currentLocale.object(forKey: NSLocale.Key.countryCode) as? String
         
-        guard let countries = CountryListDataSource.getCountries(language: language) else {return}
+        guard let countries = CountriesDataSource.getCountries(language: language) else {return}
         
         for country in countries {
             
@@ -165,8 +158,9 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
     
     //MARK: - Country Left View
     
-    private func addCountryView(){
+    private func setupCountryView(text:String? = nil){
         
+        // setup default size for leftview
         let height = self.frame.size.height;
         let frame = CGRect(x:0,y:0,width: self.frame.size.width / 2.9,height: height)
         
@@ -174,23 +168,24 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         self.contentViewholder = UIView(frame: frame)
         self.contentViewholder.backgroundColor = .clear
         
-        // Setup Button
+        // Setup Button and should be equal to left view frame
         self.countryButton = UIButton(frame: frame)
         self.countryButton.backgroundColor = .clear
 
-        // Setup label
+        // Setup label size to be dynamicly resized
         let startPadding = self.frame.size.width / 3.2
         let labelOriginX = frame.width - startPadding
         let labelWidth = frame.width - labelOriginX - labelOriginX
         
         self.countryCodeLabel = UILabel(frame: CGRect(x:labelOriginX,y:frame.origin.y,width: labelWidth,height: height))
-        self.countryCodeLabel.text = ""
+        self.countryCodeLabel.text = text
         self.countryCodeLabel.textAlignment = .center
-        self.countryCodeLabel.minimumScaleFactor = 0.5
+        self.countryCodeLabel.sizeToFit()
         
-        // Setup separator
+        // Setup separator to be at trailing of left view
         let topPadding = height / 3.5
-        self.separator = UIView(frame: CGRect(x:labelWidth + labelOriginX + (labelOriginX / 4.0),y:topPadding,width: 1,height: height - topPadding*2))
+        let leftPadding : CGFloat = 8
+        self.separator = UIView(frame: CGRect(x: self.countryCodeLabel.frame.width + labelOriginX + leftPadding,y:topPadding,width: separatorWidth,height: height - topPadding*2))
         
         // Set default style
         self.separator.backgroundColor = separatorBackgroundColor
@@ -204,20 +199,24 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         // Add Target To Button
         self.countryButton.addTarget(self, action: #selector(presentCountryView(_:)), for: .touchUpInside)
         
+        // resize the left view depending on the views inside (label/separator/padding)
+        let leftViewRightPadding : CGFloat = 8
+        let newContentViewFrame = CGRect(x:0,y:0,width: self.countryCodeLabel.frame.width + labelOriginX + leftPadding + separatorWidth + leftViewRightPadding,height: height)
+        self.contentViewholder = UIView(frame: newContentViewFrame)
+
         // Setup contentView
         self.contentViewholder.addSubview(countryCodeLabel)
         self.contentViewholder.addSubview(countryButton)
         self.contentViewholder.addSubview(separator)
         
+        // set left view
         self.leftViewMode = UITextField.ViewMode.always
-        
         self.leftView = self.contentViewholder
         
-        self.addSubview(self.contentViewholder)
-        
-        
+        // re center country code label
+        self.countryCodeLabel.center.y = self.contentViewholder.center.y
+
     }
-    
     
     //MARK: - Style
     
@@ -272,8 +271,10 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         let code = country.isoShortCode
         let name = language == .arabic ? country.nameAr : country.nameEn
         
-        // update the country and the code
-        self.updateCountryLabel(info: (dialCode: dialCode, code: code, name: name))
+        DispatchQueue.main.async {
+            // update the country and the code
+            self.updateCountryLabel(info: (dialCode: dialCode, code: code, name: name))
+        }
         
     }
     

@@ -21,14 +21,14 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
     private var countriesDataSourceArray : [CountryElement]?
     private var searchResultArray : [CountryElement]?
     
-    var delegate:CountriesDelegate?
-    var language : language!
+    private var delegate:CountriesDelegate?
+    private var language : language!
     private var languageManager : LanguageManager!
     
     var isCountryCodeHidden = false
     var inheritApplicationStyle = false
     
-    let cellIdentifier = "cell"
+    private let cellIdentifier = "cell"
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //MARK: - Life Cycle
@@ -47,10 +47,10 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
     }
     
     // This is also necessary when extending the superclass.
+    @available (*,unavailable)
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented") // or see Roman Sausarnes's answer
+        super.init(coder: aDecoder)
     }
-    
     
     @available (*,unavailable)
     override func viewDidLoad() {
@@ -97,8 +97,8 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
             self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         }
         
-        countriesDataSourceArray = CountryListDataSource.getCountries(language: language)
-        searchResultArray = CountryListDataSource.getCountries(language: language)
+        countriesDataSourceArray = CountriesDataSource.getCountries(language: language)
+        searchResultArray = CountriesDataSource.getCountries(language: language)
         
         self.tableView.register(UINib(nibName: "CountryCell", bundle: nil), forCellReuseIdentifier: "cell")
         self.tableView.semanticContentAttribute = self.language == .arabic ? .forceRightToLeft : .forceLeftToRight
@@ -112,6 +112,23 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.addObservers()
+    }
+    
+    @available (*,unavailable)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        self.removeObservers()
+        
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //MARK: Keyboard Helping Methods
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    private func addObservers(){
+        
         NotificationCenter.default.addObserver(self, selector: #selector(searchTextFieldDidChange), name: UITextField.textDidChangeNotification, object: self.searchTextField)
         
         //* add notification for keyboard when note is active
@@ -120,17 +137,11 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
         
     }
     
-    @available (*,unavailable)
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    private func removeObservers(){
         
         NotificationCenter.default.removeObserver(self)
-        
+
     }
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //MARK: Keyboard Helping Methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @objc private func keyboardWillHide(sender: NSNotification) {
         
@@ -145,7 +156,6 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
     }
     
     @objc private func keyboardWillShow(sender:NSNotification){
-        
         
         if let dic = sender.userInfo {
             if let keyboardFrame = (dic[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
@@ -177,7 +187,7 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
         if (self.searchTextField.text?.count == 0) {
             
             self.searchTextField.text = "";
-            self.countriesDataSourceArray = CountryListDataSource.getCountries(language: language)
+            self.countriesDataSourceArray = CountriesDataSource.getCountries(language: language)
             
             self.tableView.reloadData()
             
@@ -263,14 +273,14 @@ extension CountriesViewController:UITableViewDataSource,UITableViewDelegate  {
     
     internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if delegate != nil {
-            
-            self.view.endEditing(true)
-            
-            self.delegate?.didSelectCountry(country: countriesDataSourceArray![indexPath.row])
-            self.dismiss(animated: true, completion: nil)
+        self.view.endEditing(true)
+
+        guard let delegate = self.delegate else {return}
+        if let country = countriesDataSourceArray?[indexPath.row] {
+            delegate.didSelectCountry(country: country)
         }
         
+        self.dismiss(animated: true, completion: nil)
         
     }
     
