@@ -7,14 +7,14 @@
 //
 
 import UIKit
+import CoreTelephony
 
-public protocol CountryTextFieldDelegate {
-    
-    func didFindDefaultCounryCode(_ success:Bool,withInfo info: (dialCode:String?,code:String?))
-    
+public protocol FMCountryDelegate : class{
+    func didGetDefaultCountry(success:Bool,country: CountryElement?)
+    func didSelectCountry(_ country:CountryElement)
 }
 
-public class FMCountryTextField: UITextField,CountriesDelegate {
+public class FMCountryTextField: UITextField {
     
     // Views
     private var contentViewholder : UIView!
@@ -29,18 +29,25 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
     private var backgroundTintColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0)
     private var codeTextColor = UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0)
     private var separatorBackgroundColor = UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0)
-    var separatorWidth : CGFloat = 1
+    private var separatorWidth : CGFloat = 1
+    private var defaultRegex = "(\\d{9,10})"
     
-    var countryDelegate : CountryTextFieldDelegate?
-    var language : language! = .english
-    private var info : (dialCode:String?,code:String?,name:String?)!
+    private var selectedCountry : CountryElement?
     
+    private weak var countryDelegate : FMCountryDelegate?
+    private var language : language! = .english
+    private var defaultsToLocaleCountry : Bool = true
+    private var defaultsToCellularCountry : Bool = false
     
     //MARK: - Life cycle
-    
-    override public func awakeFromNib() {
-        super.awakeFromNib()
+
+    func initiate(delegate:FMCountryDelegate,language:language = .english){
         
+        // update local variables
+        self.countryDelegate = delegate
+        self.language = language
+        
+        // force layout to be left to right
         self.semanticContentAttribute = .forceLeftToRight
         
         // Add country left View
@@ -48,78 +55,93 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         
         // Setup TextField Keyboard
         if #available(iOS 10, *){
-            
             self.keyboardType = .asciiCapableNumberPad
-            
         }else {
-        
             self.keyboardType  = .phonePad
-        
         }
-
+        
         self.getCurrentCountryCode()
-
+    
     }
     
     //MARK: - Update Views
-
-    func updateCountryLabel(info: (dialCode:String?,code:String?,name:String?)){
     
-        let text = "\(info.code ?? "") \(info.dialCode ?? "")"
+    func updateCountryDisplay(country: CountryElement){
+        
+        let text = "\(country.isoShortCode ?? "") \(country.countryInternationlKey ?? "")"
         self.setupCountryView(text: text)
-        self.info = (info.dialCode,info.code,info.name)
-    
+        self.selectedCountry = country
+        
     }
     
-    func getPhoneNumberWithCode(withPlus:Bool = false)->String{
-    
-        guard let code = self.info.code else { print("Error:Could not get the dial Code"); return "" }
-
+    /// IAC : International Access Code which is + or 00
+    public func getPhoneNumberIncludingIAC(withPlus:Bool = false)->String{
+        
+        guard let code = self.selectedCountry?.countryInternationlKey else { print("Error: Could not get country"); return "" }
+        
         if withPlus {
             
-            if self.text!.count > 0 {
-                if self.text!.first == "0" {
-                    let phone = String(self.text!.dropFirst())
-                    self.text! = phone
+            let text = self.text ?? ""
+            
+            if text.count > 0 {
+                if text.first == "0" {
+                    let phone = String(text.dropFirst())
+                    self.text = phone
                 }
             }
             
-            return  code + self.text!
+            return  code + (self.text ?? "")
             
         }else {
-        
+            
             let code = code.replacingOccurrences(of: "+", with: "00")
-            if self.text!.count > 0 {
-                if self.text!.first == "0" {
-                    let phone = String(self.text!.dropFirst())
-                    self.text! = phone
+            let text = self.text ?? ""
+            
+            if text.count > 0 {
+                if text.first == "0" {
+                    let phone = String(text.dropFirst())
+                    self.text = phone
                 }
             }
             
-            return  code + self.text!
-        
+            return  code + (self.text ?? "")
+            
         }
         
-    
+        
     }
-
+    
     //MARK: - Validation Method
     
-    func validatePhone()->Bool{
-    
-        let phoneRegex = "(\\d{9,10})"
-        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+    public func validatePhone()->Bool{
         
-        return phoneTest.evaluate(with: self.text)
+        if self.selectedCountry == nil {
+            return self.evaluate(text: self.text ?? "", regex: defaultRegex)
+        }else {
+            let mobile = self.text ?? ""
+            let regex = self.selectedCountry!.phoneRegex ?? defaultRegex
+            return self.evaluate(text: mobile, regex: regex)
+        }
+        
+    }
     
+    private func evaluate(text:String, regex:String)->Bool{
+        let phoneRegex = regex
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+        return phoneTest.evaluate(with: text)
     }
     
     //MARK: - Helping Methods
     
     private func getCurrentCountryCode(){
         
-        let currentLocale : NSLocale = NSLocale.current as NSLocale
-        let countryCode = currentLocale.object(forKey: NSLocale.Key.countryCode) as? String
+        var countryCode : String? = nil
+        
+        if defaultsToLocaleCountry {
+            countryCode = FMCountryTextField.getCountryCodeFromLocale()
+        }else if defaultsToCellularCountry {
+            countryCode = FMCountryTextField.getCountryCodeFromCellularProvider()
+        }
         
         guard let countries = CountriesDataSource.getCountries(language: language) else {return}
         
@@ -127,14 +149,10 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
             
             if country.isoShortCode?.lowercased() == countryCode?.lowercased() {
                 
-                let dialCode = country.countryInternationlKey
-                let code = country.isoShortCode
-                let name = language == .arabic ? country.nameAr : country.nameEn
-                
-                self.updateCountryLabel(info: (dialCode: dialCode, code: code, name: name))
+                self.updateCountryDisplay(country: country)
                 
                 guard let delegate = self.countryDelegate else {print("Error:delegate is not set"); return }
-                delegate.didFindDefaultCounryCode(true, withInfo: (dialCode: dialCode, code: code))
+                delegate.didGetDefaultCountry(success: true, country: country)
                 
                 return;
             }
@@ -142,17 +160,17 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         }
         
         guard let delegate = self.countryDelegate else { return }
-        delegate.didFindDefaultCounryCode(false, withInfo: (dialCode: nil, code: nil))
+        delegate.didGetDefaultCountry(success: false, country: nil)
         
     }
     
     private func getTopMostViewController()->UIViewController?{
-    
+        
         guard let keyWindow = UIApplication.shared.keyWindow else { return nil}
         guard let visableVC = keyWindow.visibleViewController() else { return nil}
-
+        
         return visableVC
-    
+        
     }
     
     
@@ -171,7 +189,7 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         // Setup Button and should be equal to left view frame
         self.countryButton = UIButton(frame: frame)
         self.countryButton.backgroundColor = .clear
-
+        
         // Setup label size to be dynamicly resized
         let startPadding = self.frame.size.width / 3.2
         let labelOriginX = frame.width - startPadding
@@ -203,7 +221,7 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         let leftViewRightPadding : CGFloat = 8
         let newContentViewFrame = CGRect(x:0,y:0,width: self.countryCodeLabel.frame.width + labelOriginX + leftPadding + separatorWidth + leftViewRightPadding,height: height)
         self.contentViewholder = UIView(frame: newContentViewFrame)
-
+        
         // Setup contentView
         self.contentViewholder.addSubview(countryCodeLabel)
         self.contentViewholder.addSubview(countryButton)
@@ -215,41 +233,63 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         
         // re center country code label
         self.countryCodeLabel.center.y = self.contentViewholder.center.y
-
+        
     }
     
     //MARK: - Style
     
-    func setBorderColorWithWidth(_ color: UIColor,width:CGFloat){
-    
-        self.layer.borderColor = color.cgColor
-        self.layer.borderWidth = width
-    
-    }
-    
-    func setCornerRadius(_ size:CGFloat){
-    
-        self.layer.cornerRadius = size
-        self.layer.masksToBounds = true
-    
-    }
-    
-    func setBackgroundTint(_ color:UIColor){
-    
-         self.backgroundColor = color
+    public func setStyle(backgroundTint:UIColor,separatorColor:UIColor,borderColor:UIColor,borderWidth:CGFloat,cornerRadius:CGFloat,countryCodeTextColor:UIColor){
+        
+        self.setBorderColor(borderColor, width: borderWidth)
+        self.setCornerRadius(cornerRadius)
+        self.setBackgroundTint(backgroundTint)
+        self.setCountryCodeTextColor(countryCodeTextColor)
+        self.setSeparatorColor(separatorColor)
         
     }
     
-    func setCountryCodeLabelTextColor(_ color:UIColor){
-    
-        countryCodeLabel.textColor = color
-    
+    public func setBorderColor(_ color: UIColor,width:CGFloat){
+        
+        self.layer.borderColor = color.cgColor
+        self.layer.borderWidth = width
+        
     }
     
-    func setSeparatorBackgroundColor(_ color:UIColor){
+    public func setCornerRadius(_ size:CGFloat){
+        
+        self.layer.cornerRadius = size
+        self.layer.masksToBounds = true
+        
+    }
+    
+    public func setBackgroundTint(_ color:UIColor){
+        
+        self.backgroundColor = color
+        
+    }
+    
+    public func setCountryCodeTextColor(_ color:UIColor){
+        
+        countryCodeLabel.textColor = color
+        
+    }
+    
+    public func setSeparatorColor(_ color:UIColor){
         
         separator.backgroundColor = color
         
+    }
+    
+    public func setDefaultToLocaleSearch(){
+        
+        self.defaultsToLocaleCountry = true
+        self.defaultsToCellularCountry = false
+    }
+    
+    public func setDefaultToCellularSearch(){
+        
+        self.defaultsToLocaleCountry = false
+        self.defaultsToCellularCountry = true
     }
     
     //MARK: - Actions and Selectors
@@ -263,20 +303,76 @@ public class FMCountryTextField: UITextField,CountriesDelegate {
         
     }
     
-    //MARK: - Country Delegate
+
     
-    public func didSelectCountry(country: CountryElement) {
-        
-        let dialCode = country.countryInternationlKey
-        let code = country.isoShortCode
-        let name = language == .arabic ? country.nameAr : country.nameEn
+}
+
+//MARK: - Country Delegate
+extension FMCountryTextField:CountriesDelegate {
+    
+    internal func didSelectCountry(country: CountryElement) {
         
         DispatchQueue.main.async {
             // update the country and the code
-            self.updateCountryLabel(info: (dialCode: dialCode, code: code, name: name))
+            self.updateCountryDisplay(country: country)
         }
+        
+        guard let delegate = self.countryDelegate else {return}
+        delegate.didSelectCountry(country)
         
     }
     
+}
 
+//MARK: - Country Code Getters
+fileprivate extension FMCountryTextField {
+    class func getCountryCodeFromCellularProvider() -> String? {
+        let networkInfo = CTTelephonyNetworkInfo()
+        let carrier = networkInfo.subscriberCellularProvider
+        return carrier?.isoCountryCode
+    }
+    
+    class func getCountryCodeFromLocale() -> String? {
+        let currentLocale : NSLocale = NSLocale.current as NSLocale
+        let countryCode = currentLocale.object(forKey: NSLocale.Key.countryCode) as? String
+        return countryCode
+    }
+}
+
+//MARK: - View Controller Getter
+fileprivate extension UIWindow {
+    
+    func visibleViewController() -> UIViewController? {
+        if let rootViewController: UIViewController  = self.rootViewController {
+            return UIWindow.getVisibleViewControllerFrom(rootViewController)
+        }
+        return nil
+    }
+    
+    class func getVisibleViewControllerFrom(_ vc:UIViewController) -> UIViewController {
+        
+        if vc.isKind(of: UINavigationController.self) {
+            
+            let navigationController = vc as! UINavigationController
+            return UIWindow.getVisibleViewControllerFrom( navigationController.visibleViewController!)
+            
+        } else if vc.isKind(of: UITabBarController.self) {
+            
+            let tabBarController = vc as! UITabBarController
+            return UIWindow.getVisibleViewControllerFrom(tabBarController.selectedViewController!)
+            
+        } else {
+            
+            if let presentedViewController = vc.presentedViewController {
+                
+                return UIWindow.getVisibleViewControllerFrom(presentedViewController)
+                
+            } else {
+                
+                return vc;
+            }
+        }
+    }
+    
+    
 }

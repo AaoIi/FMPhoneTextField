@@ -8,58 +8,62 @@
 
 import UIKit
 
-class ViewController: UIViewController,CountryTextFieldDelegate {
+class ViewController: UIViewController {
     
-    @IBOutlet var countryTextField: FMCountryTextField!{
-        didSet{
-            //countryTextField.isArabic = true
-            countryTextField.countryDelegate = self
-            countryTextField.language = .english
-        }
-    }
+    @IBOutlet var countryTextField: FMCountryTextField!
     
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        countryTextField.setDefaultToCellularSearch()
+        countryTextField.initiate(delegate: self, language: .english)
+        
         // Setup Textfield Style
-        countryTextField.setBorderColorWithWidth(UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0), width: 1)
+        countryTextField.setBorderColor(UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0), width: 1)
         countryTextField.setCornerRadius(7)
         countryTextField.setBackgroundTint(UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0))
-        countryTextField.setCountryCodeLabelTextColor(UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0))
-        countryTextField.setSeparatorBackgroundColor(UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0))
+        countryTextField.setCountryCodeTextColor(UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0))
+        countryTextField.setSeparatorColor(UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0))
         
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     
     //MARK: - Actions and Selectors
     
-    @IBAction func validateAction(_ sender: Any) {
+    @IBAction func validateAction(_ validationButton: UIButton) {
         
         if self.countryTextField.validatePhone() {
             
-            print(self.countryTextField.getPhoneNumberWithCode(withPlus: false))
+            print(self.countryTextField.getPhoneNumberIncludingIAC(withPlus: false))
             
-            (sender as! UIButton).setTitle("Valid Phone", for: .normal)
+            validationButton.setTitle("Valid Phone", for: .normal)
             
         }else {
             
-            (sender as! UIButton).setTitle("Invalid Phone", for: .normal)
+            validationButton.setTitle("Invalid Phone", for: .normal)
             
         }
         
     }
+
+}
+
+//MARK: - Country TextField Delegate
+extension ViewController:FMCountryDelegate {
     
-    //MARK: - Country TextField Delegate
+    func didSelectCountry(_ country: CountryElement) {
+        
+        //have access on selected country
+        
+    }
     
-    func didFindDefaultCounryCode(_ success: Bool, withInfo info: (dialCode: String?, code: String?)) {
+    func didGetDefaultCountry(success: Bool, country: CountryElement?) {
         
         if success{
+            
+            // updated already
             
         }else {
             
@@ -69,12 +73,12 @@ class ViewController: UIViewController,CountryTextFieldDelegate {
             // 3.Device is outside of cellular service range.
             
             // Set Default Text
-            countryTextField.updateCountryLabel(info: (dialCode: "JO", code: "+962", name: "Jordan"))
+            let country = CountryElement(isoCode: "JOR", isoShortCode: "JO", nameAr: "الاردن", nameEn: "Jordan", countryInternationlKey: "+962",phoneRegex:"")
+            countryTextField.updateCountryDisplay(country: country)
             
         }
         
     }
-
-
+    
 }
 

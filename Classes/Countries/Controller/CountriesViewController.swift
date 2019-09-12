@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CountriesDelegate {
+protocol CountriesDelegate : class{
     func didSelectCountry(country:CountryElement)
 }
 
@@ -21,14 +21,17 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
     private var countriesDataSourceArray : [CountryElement]?
     private var searchResultArray : [CountryElement]?
     
-    private var delegate:CountriesDelegate?
+    private weak var delegate:CountriesDelegate?
     private var language : language!
     private var languageManager : LanguageManager!
     
     var isCountryCodeHidden = false
     var inheritApplicationStyle = false
     
-    private let cellIdentifier = "cell"
+    // cell configs
+    private let countryCellIdentifier = "cell"
+    private let estimatedHeightForCountryCell : CGFloat = 200
+    
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //MARK: - Life Cycle
@@ -57,6 +60,33 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
         super.viewDidLoad()
         
         searchResultArray = []
+        countriesDataSourceArray = CountriesDataSource.getCountries(language: language)
+        searchResultArray = CountriesDataSource.getCountries(language: language)
+        
+        self.setupViews()
+        
+    }
+    
+    @available (*,unavailable)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.addObservers()
+    }
+    
+    @available (*,unavailable)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        self.removeObservers()
+        
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //MARK: SetupViews
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    private func setupViews(){
         
         if inheritApplicationStyle {
             
@@ -82,12 +112,15 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
             
         }
         
+        // set title
         self.navigationItem.title = languageManager.title
+        
+        // set search config
         self.searchTextField.placeholder = languageManager.search
-
         self.searchTextField.textAlignment = .center
         
-        // Back Buton
+        
+        // setup Back Buton
         let cancelBarButtonItem = UIBarButtonItem(title: languageManager.cancel, style: .plain, target: self, action: #selector(dismissPresentedView))
         cancelBarButtonItem.tintColor = .black
         
@@ -97,34 +130,18 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
             self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         }
         
-        countriesDataSourceArray = CountriesDataSource.getCountries(language: language)
-        searchResultArray = CountriesDataSource.getCountries(language: language)
-        
-        self.tableView.register(UINib(nibName: "CountryCell", bundle: nil), forCellReuseIdentifier: "cell")
+        // tableview related
+        self.tableView.register(UINib(nibName: "CountryCell", bundle: nil), forCellReuseIdentifier: countryCellIdentifier)
         self.tableView.semanticContentAttribute = self.language == .arabic ? .forceRightToLeft : .forceLeftToRight
-
+        
         self.tableView.reloadData()
         self.tableView.tableFooterView = UIView()
         
     }
     
-    @available (*,unavailable)
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.addObservers()
-    }
-    
-    @available (*,unavailable)
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        self.removeObservers()
-        
-    }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //MARK: Keyboard Helping Methods
+    //MARK: Keyboard Helping
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     private func addObservers(){
@@ -186,7 +203,6 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
         
         if (self.searchTextField.text?.count == 0) {
             
-            self.searchTextField.text = "";
             self.countriesDataSourceArray = CountriesDataSource.getCountries(language: language)
             
             self.tableView.reloadData()
@@ -216,7 +232,7 @@ extension CountriesViewController:UITableViewDataSource,UITableViewDelegate  {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //MARK: - UITableView Datasource
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (self.countriesDataSourceArray?.count)!
     }
@@ -227,14 +243,15 @@ extension CountriesViewController:UITableViewDataSource,UITableViewDelegate  {
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CountryCell
-        cell?.selectionStyle = .none
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: countryCellIdentifier) as? CountryCell else {return UITableViewCell()}
+        
+        cell.selectionStyle = .none
         
         let object = countriesDataSourceArray?[indexPath.row]
         
-        cell?.populateCell(object: object, isCountryCodeHidden: isCountryCodeHidden,language: language)
+        cell.populateCell(object: object, isCountryCodeHidden: isCountryCodeHidden,language: language)
         
-        return cell!
+        return cell
         
     }
     
@@ -268,7 +285,7 @@ extension CountriesViewController:UITableViewDataSource,UITableViewDelegate  {
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //MARK: - UITableView Delegate methods
+    //MARK: - UITableView Delegate
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -289,7 +306,7 @@ extension CountriesViewController:UITableViewDataSource,UITableViewDelegate  {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return estimatedHeightForCountryCell
     }
     
 }

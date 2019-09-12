@@ -18,10 +18,10 @@ public struct CountryElement: Codable {
     let isoCode: String?
     let isoShortCode: String?
     let nameAr, nameEn, countryInternationlKey: String?
-    let phoneRegex: PhoneRegex?
-}
-
-public enum PhoneRegex: String, Codable {
-    case the00109612 = "[0]{0,1}[0-9]{6,12}$"
-    case the00171791097 = "[0]{0,1}[7]{1}[7-9]{1}[0-9]{7}$"
+    let phoneRegex: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case isoCode, isoShortCode, nameAr, nameEn,
+        countryInternationlKey, phoneRegex
+    }
 }
