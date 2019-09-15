@@ -33,15 +33,14 @@ class CountriesViewController: UIViewController,UITextFieldDelegate{
     private let estimatedHeightForCountryCell : CGFloat = 200
     
     
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //MARK: - Life Cycle
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     // This allows you to initialise your custom UIViewController without a nib or bundle.
-    convenience init(delegate:CountriesDelegate?,language:language) {
+    convenience init(delegate:CountriesDelegate?,language:language,isCountryCodeHidden:Bool = false) {
         self.init(nibName:"CountriesViewController", bundle:nil)
         self.language = language; languageManager = LanguageManager.init(language: language);
         self.delegate = delegate
+        self.isCountryCodeHidden = isCountryCodeHidden
     }
     
     // This extends the superclass.

@@ -16,6 +16,19 @@ public protocol FMCountryDelegate : class{
 
 public class FMCountryTextField: UITextField {
     
+    public enum codeDisplay {
+        case isoShortCode
+        case internationlKey
+        case bothIsoShortCodeAndInternationlKey
+        case countryName
+    }
+    
+    public enum searchType {
+        case cellular
+        case locale
+        case both
+    }
+    
     // Views
     private var contentViewholder : UIView!
     private var countryButton: UIButton!
@@ -36,12 +49,13 @@ public class FMCountryTextField: UITextField {
     
     private weak var countryDelegate : FMCountryDelegate?
     private var language : language! = .english
-    private var defaultsToLocaleCountry : Bool = true
-    private var defaultsToCellularCountry : Bool = false
-    
+    private var defaultsSearchType : searchType = .locale
+    private var countryCodeDisplay : codeDisplay = .bothIsoShortCodeAndInternationlKey
+    private var isCountryCodeInListHidden : Bool = false
+
     //MARK: - Life cycle
 
-    func initiate(delegate:FMCountryDelegate,language:language = .english){
+    public func initiate(delegate:FMCountryDelegate,language:language){
         
         // update local variables
         self.countryDelegate = delegate
@@ -66,9 +80,26 @@ public class FMCountryTextField: UITextField {
     
     //MARK: - Update Views
     
-    func updateCountryDisplay(country: CountryElement){
+    public func updateCountryDisplay(country: CountryElement){
         
-        let text = "\(country.isoShortCode ?? "") \(country.countryInternationlKey ?? "")"
+        var text = ""
+        
+        switch countryCodeDisplay {
+        case .bothIsoShortCodeAndInternationlKey:
+            text = "\(country.isoShortCode ?? "") \(country.countryInternationlKey ?? "")"
+            break;
+        case .countryName:
+             let name = language == .arabic ? country.nameAr : country.nameEn
+             text = "\(name ?? "")"
+             break;
+        case .isoShortCode:
+            text = "\(country.isoShortCode ?? "")"
+            break;
+        case .internationlKey:
+            text = "\(country.countryInternationlKey ?? "")"
+            break;
+        }
+        
         self.setupCountryView(text: text)
         self.selectedCountry = country
         
@@ -137,10 +168,12 @@ public class FMCountryTextField: UITextField {
         
         var countryCode : String? = nil
         
-        if defaultsToLocaleCountry {
+        if self.defaultsSearchType == .locale {
             countryCode = FMCountryTextField.getCountryCodeFromLocale()
-        }else if defaultsToCellularCountry {
+        }else if self.defaultsSearchType == .cellular {
             countryCode = FMCountryTextField.getCountryCodeFromCellularProvider()
+        }else {
+            countryCode = FMCountryTextField.getCountryCodeFromCellularProvider() ?? FMCountryTextField.getCountryCodeFromLocale()
         }
         
         guard let countries = CountriesDataSource.getCountries(language: language) else {return}
@@ -215,7 +248,7 @@ public class FMCountryTextField: UITextField {
         self.backgroundColor = self.backgroundTintColor
         
         // Add Target To Button
-        self.countryButton.addTarget(self, action: #selector(presentCountryView(_:)), for: .touchUpInside)
+        self.countryButton.addTarget(self, action: #selector(presentCountries(_:)), for: .touchUpInside)
         
         // resize the left view depending on the views inside (label/separator/padding)
         let leftViewRightPadding : CGFloat = 8
@@ -280,30 +313,31 @@ public class FMCountryTextField: UITextField {
         
     }
     
-    public func setDefaultToLocaleSearch(){
+    public func setDefaultCountrySearch(to type:searchType){
         
-        self.defaultsToLocaleCountry = true
-        self.defaultsToCellularCountry = false
+        self.defaultsSearchType = type
     }
     
-    public func setDefaultToCellularSearch(){
+    public func setCountryCodeInList(hidden:Bool ){
         
-        self.defaultsToLocaleCountry = false
-        self.defaultsToCellularCountry = true
+        self.isCountryCodeInListHidden = hidden
     }
     
+    public func setCountryCodeDisplay(type:codeDisplay){
+        
+        self.countryCodeDisplay = type
+    }
+
     //MARK: - Actions and Selectors
     
-    @objc private func presentCountryView(_ textField:FMCountryTextField){
+    @objc private func presentCountries(_ textField:FMCountryTextField){
         
-        let vc = CountriesViewController(delegate: self, language: language)
+        let vc = CountriesViewController(delegate: self, language: language,isCountryCodeHidden: self.isCountryCodeInListHidden)
         let navigation = UINavigationController(rootViewController: vc)
         guard let topMostViewController = self.getTopMostViewController() else { print("Could not present"); return }
         topMostViewController.present(navigation, animated: true, completion: nil)
         
     }
-    
-
     
 }
 

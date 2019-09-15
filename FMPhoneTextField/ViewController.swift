@@ -17,7 +17,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        countryTextField.setDefaultToCellularSearch()
+        countryTextField.setDefaultCountrySearch(to: .locale)
+        countryTextField.setCountryCodeInList(hidden: true)
+        countryTextField.setCountryCodeDisplay(type: .bothIsoShortCodeAndInternationlKey)
         countryTextField.initiate(delegate: self, language: .english)
         
         // Setup Textfield Style

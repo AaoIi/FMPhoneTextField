@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum language {
+public enum language {
     case english
     case arabic
 }
