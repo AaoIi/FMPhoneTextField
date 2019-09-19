@@ -1,0 +1,16 @@
+PODS:
+  - FMPhoneTextField (1.0.0)
+
+DEPENDENCIES:
+  - FMPhoneTextField (from `../FMPhoneTextField/`)
+
+EXTERNAL SOURCES:
+  FMPhoneTextField:
+    :path: "../FMPhoneTextField/"
+
+SPEC CHECKSUMS:
+  FMPhoneTextField: b48929bceb009df0dab4285e3a31656be7db35c2
+
+PODFILE CHECKSUM: 451bb248a2e47c8aac341650e49297ae5aa7b503
+
+COCOAPODS: 1.7.2

@@ -1,31 +1,25 @@
 
 # FMPhoneTextField
 
-FMPhoneTextField provides a simple and easy way to deal with mobile number field by selecting the country from a list which supports Arabic and English language, And it will find the current location of user using SIM card.
+FMPhoneTextField provides a simple and easy way to deal with mobile number field by selecting the country from a list which supports Arabic and English language, And it will find the current country of user using SIM card or locale (your choise).
 
-It is compatible with **iOS** (8.0 - 10.0)
+It is compatible with **iOS** (9.0 - 13.0)
 
 ## Preview
 <img src="https://github.com/AaoIi/FMPhoneTextField/blob/master/sample.png?raw=true">
 
 # IMPORTANT
 
-## Supporting Swift 3+
+## Supporting Swift 5+
 
-To install **FMPhoneTextField** for Swift 3.x using CocoaPods, include the following in your Podfile
+To install **FMPhoneTextField** for Swift 5.x using CocoaPods, include the following in your Podfile
 ```
 pod 'FMPhoneTextField', '~> 1.0'
 ```
-To install **FMPhoneTextField** for Swift 3.x using Carthage, include the following in your Cartfile
-```
-github "aaoii/FMPhoneTextField" ~> 1.0
-```
 
 ## Installation
-### Manual
-Just drop the **FMPhoneTextField/Classes** folder into your project. That's it!
 
-### CocoaPods (Pending)
+### CocoaPods
 [CocoaPods][] is a dependency manager for Cocoa projects. To install FMPhoneTextField with CocoaPods:
 
  1. Make sure CocoaPods is [installed][CocoaPods Installation].
@@ -45,56 +39,79 @@ Just drop the **FMPhoneTextField/Classes** folder into your project. That's it!
  4. In your code import FMPhoneTextField like so:
    `import FMPhoneTextField`
 
-## Example
+## How to use?
 
+### Subclass the textfield from storyboard using identity inspector by setting the Class to **FMPhoneTextField**
 ```swift
-//subclass the textfield from storyboard using identity inspector by setting the Class to **FMCountryTextField**
-//declare this property and connnect it to your storyboard textfield
-//add the CountryTextFieldDelegate to your class 
+@IBOutlet var countryTextField: FMPhoneTextField!
+```
 
-    @IBOutlet var countryTextField: FMCountryTextField!{
-        didSet{
-            //countryTextField.isArabic = true
-            countryTextField.countryDelegate = self
-        }
+### Calling initiate method is the core of handling everything
+```swift
+countryTextField.initiate(delegate: <#T##FMPhoneDelegate#>, language: <#T##language#>)
+```
+
+### Style
+```swift
+countryTextField.setBorderColor(_ color: UIColor,width:CGFloat)
+countryTextField.setCornerRadius(_ size:CGFloat)
+countryTextField.setBackgroundTint(_ color:UIColor)
+countryTextField.setCountryCodeTextColor(_ color:UIColor)
+countryTextField.setSeparatorColor(_ color:UIColor)
+```
+
+### Getting the phone number starting with 00/+
+```swift
+countryTextField.getPhoneNumberIncludingIAC(withPlus: false)
+```
+
+### Validation
+```swift
+let isValid = self.countryTextField.validatePhone()
+```
+
+### Customization
+
+#### Find out the default country depending on phone locale or cellular (Must be called before initiate)
+```swift
+countryTextField.setDefaultCountrySearch(to: .locale)
+```
+
+#### Set country code display (Must be called before initiate)
+```swift
+countryTextField.setCountryCodeDisplay(type: .bothIsoShortCodeAndInternationlKey)
+```
+
+#### Hide Country code in list 
+```swift
+countryTextField.setCountryCodeInList(hidden: false)
+```
+
+### FMPhoneDelegate
+```swift
+func didSelectCountry(_ country: CountryElement) {
+
+    //have access on selected country
+}
+
+func didGetDefaultCountry(success: Bool, country: CountryElement?) {
+
+    if success{
+        // updated already
+    }else {
+
+    // Fail to get default code in these cases:
+    // 1.Airplane mode.
+    // 2.No SIM card in the device.
+    // 3.Device is outside of cellular service range.
+
+    // Set Default Text
+    let country = CountryElement(isoCode: "USA", isoShortCode: "US", nameAr: "الولايات المتحدة الامريكية", nameEn: "United States", countryInternationlKey: "+1",phoneRegex:"")
+    countryTextField.updateCountryDisplay(country: country)
+
     }
 
-//declare this inside of viewDidLoad to style your textfield or override the current style
-
-	countryTextField.setBorderColorWithWidth(UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0), width: 1)
-	countryTextField.setCornerRadius(7)
-	countryTextField.setBackgroundTint(UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0))
-	countryTextField.setCountryCodeLabelTextColor(UIColor(red: 107/255, green: 174/255, blue: 242/255, alpha: 1.0))
-	countryTextField.setSeparatorBackgroundColor(UIColor(red: 226/255, green: 226/255, blue: 226/255, alpha: 1.0))
-
-//validate the phone using this proparty
-
-	countryTextField.validatePhone() 
-
-//get full number with country code with + or 00
-
-	countryTextField.getPhoneNumberWithCode(withPlus: false)
-	
-//add the delegate method to your class its manditory when it fail's to get the current user country
-
-    func didFindDefaultCounryCode(_ success: Bool, withInfo info: (dialCode: String?, code: String?)) {
-        
-        if success{
-            
-        }else {
-            
-            // Fail to get default code in these cases:
-            // 1.Airplane mode.
-            // 2.No SIM card in the device.
-            // 3.Device is outside of cellular service range.
-            
-            // Set Default Text
-            countryTextField.updateCountryLabel(info: (dialCode: "JO", code: "+962", name: "Jordan"))
-            
-        }
-        
-    }
-
+}
 ```
 
 ## Want to help?

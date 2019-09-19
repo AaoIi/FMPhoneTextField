@@ -1,0 +1,6 @@
+framework module FMPhoneTextField {
+  umbrella header "FMPhoneTextField-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sGx-jE-ibf">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="aP9-te-Vjl">
+            <objects>
+                <viewController id="sGx-jE-ibf" customClass="ViewController" customModule="FMPhoneTextField_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="buz-1b-yOf"/>
+                        <viewControllerLayoutGuide type="bottom" id="q9G-S0-7bH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="a4w-Dq-MAp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hy0-a7-oTI" customClass="FMPhoneTextField" customModule="FMPhoneTextField">
+                                <rect key="frame" x="20" y="64" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="X5h-Mq-UOI"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" alpha="0.75" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRD-QL-WTw">
+                                <rect key="frame" x="103.5" y="135" width="207" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Validate">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="validateAction:" destination="sGx-jE-ibf" eventType="touchUpInside" id="dSI-uH-vQj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="jRD-QL-WTw" firstAttribute="top" secondItem="hy0-a7-oTI" secondAttribute="bottom" constant="21" id="00F-NI-hhU"/>
+                            <constraint firstItem="jRD-QL-WTw" firstAttribute="width" secondItem="a4w-Dq-MAp" secondAttribute="width" multiplier="0.5" id="49z-aB-2Gu"/>
+                            <constraint firstItem="jRD-QL-WTw" firstAttribute="centerX" secondItem="a4w-Dq-MAp" secondAttribute="centerX" id="RsV-d9-51S"/>
+                            <constraint firstItem="hy0-a7-oTI" firstAttribute="top" secondItem="ttk-Pd-0FF" secondAttribute="top" constant="20" id="uhj-Cz-B6C"/>
+                            <constraint firstItem="hy0-a7-oTI" firstAttribute="leading" secondItem="a4w-Dq-MAp" secondAttribute="leading" constant="20" id="y9S-nB-qU9"/>
+                            <constraint firstAttribute="trailing" secondItem="hy0-a7-oTI" secondAttribute="trailing" constant="20" id="z8T-aO-LwL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ttk-Pd-0FF"/>
+                    </view>
+                    <connections>
+                        <outlet property="countryTextField" destination="hy0-a7-oTI" id="SBf-UA-kMn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vtg-T5-brS" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
