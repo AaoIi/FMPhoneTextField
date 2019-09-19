@@ -41,14 +41,14 @@ pod 'FMPhoneTextField', '~> 1.0'
 
 ## How to use?
 
-### Subclass the textfield from storyboard using identity inspector by setting the Class to **FMPhoneTextField**
+### Subclass textfield to **FMPhoneTextField**
 ```swift
 @IBOutlet var countryTextField: FMPhoneTextField!
 ```
 
 ### Calling initiate method is the core of handling everything
 ```swift
-countryTextField.initiate(delegate: <#T##FMPhoneDelegate#>, language: <#T##language#>)
+countryTextField.initiate(delegate: FMPhoneDelegate, language: language)
 ```
 
 ### Style
