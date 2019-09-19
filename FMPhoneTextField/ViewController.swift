@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         
         countryTextField.setDefaultCountrySearch(to: .locale)
         countryTextField.setCountryCodeInList(hidden: true)
-        countryTextField.setCountryCodeDisplay(type: .bothIsoShortCodeAndInternationlKey)
+        countryTextField.setCountryCodeDisplay(type: .internationlKey)
         countryTextField.initiate(delegate: self, language: .english)
         
         // Setup Textfield Style

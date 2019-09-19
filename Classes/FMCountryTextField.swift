@@ -150,7 +150,7 @@ public class FMCountryTextField: UITextField {
             return self.evaluate(text: self.text ?? "", regex: defaultRegex)
         }else {
             let mobile = self.text ?? ""
-            let regex = self.selectedCountry!.phoneRegex ?? defaultRegex
+            let regex = self.selectedCountry?.phoneRegex ?? defaultRegex
             return self.evaluate(text: mobile, regex: regex)
         }
         
