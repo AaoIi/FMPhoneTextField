@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "FMPhoneTextField"
   spec.version      = "1.0.0"
-  spec.summary      = "Phone Textfield and countries picker including international key and validation"
+  spec.summary      = "Phone Textfield and countries picker with beautiful design and validation"
 
   spec.description  = "FMPhoneTextField provides a simple and easy way to deal with mobile number field by selecting the country from a list which supports Arabic and English language, And it will find the current location of user using SIM card or phone locale."
   spec.homepage     = "https://github.com/AaoIi/FMPhoneTextField"
